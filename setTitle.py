@@ -1,6 +1,6 @@
 from docx import *
 from docx.oxml.ns import qn
-from docx.shared import Pt,Inches
+from docx.shared import Pt,Inches,Cm
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT,WD_LINE_SPACING
  
 # # 创建一个已存在的 word 文档的对象
@@ -50,16 +50,85 @@ from docx.enum.text import WD_PARAGRAPH_ALIGNMENT,WD_LINE_SPACING
 
 # new_file.save('res.docx')
 
-file = Document("test.docx")
+
+# file = docx.Document("test.docx")
+# children = file.element.body.iter()
+# child_iters = []
+# tags = []
+# for child in children:
+#     # 通过类型判断目录
+#     if child.tag.endswith(('AlternateContent','textbox')):
+#         for ci in child.iter():
+#             tags.append(ci.tag)
+#             if ci.tag.endswith(('main}r', 'main}pPr')):
+#                 child_iters.append(ci)
+# text = ['']
+# for ci in child_iters :
+#     if ci.tag.endswith('main}pPr'):
+#         text.append('')
+#     else:
+#         text[-1] += ci.text
+#     ci.text = ''
+# trans_text = ['***'+t+'***' for t in text]
+# print(trans_text)
+# i, k = 0, 0
+# for ci in child_iters :
+#     if ci.tag.endswith('main}pPr'):
+#         i += 1
+#         k = 0
+#     elif k == 0:
+#         ci.text = trans_text[i]
+#         k = 1
+# file.save('12220.docx')
+# 提取word目录
+    # from lxml import etree
+    # children = file.element.body.iter()
+    # child_iters = []
+    # for child in children:
+    #     # 通过类型判断目录
+    #     if child.tag.endswith('main}sdt'):
+    #         print(etree.tostring(child,encoding='utf-8',pretty_print=True))
+    #         # print(child.xml)
+    #         print(child.iter() )
+    #         print(type(child.iter()))
+    #         for ci in child.iter():
+    #             if ci.text and ci.text.strip():
+    #                 child_iters.append(ci)
+    # catalog = [ci.text for ci in child_iters]
+    # print(catalog)
+file = Document("new.docx")
+scs = file.sections
+for sc in scs:
+    # print(sc.right_margin)
+    # sc.right_margin = Cm(3.2)
+    # sc.left_margin = Cm(3.2)
+    # sc.top_margin = Cm(3.9)
+    # sc.bottom_margin = Cm(3.3)
+    # sc.header_distance = Cm(1.5)
+    # sc.footer_distance = Cm(1.75)
+    # print(sc.right_margin)
+    print(len(sc.header.paragraphs))
+    # print(sc.header.paragraphs[0].text)
+    # sc.header.paragraphs[0].text = "1\t\t3"
+    sc.header.add_paragraph("1\t2\t3")
+print(file.settings.odd_and_even_pages_header_footer)
+file.settings.odd_and_even_pages_header_footer = True
+print(file.settings.odd_and_even_pages_header_footer)
 paras = file.paragraphs
 for para in paras:
-    print(para.text)
-    print( para.paragraph_format.space_before)
-    print( para.paragraph_format.space_after)
+    for run in para.runs:
+        run.bold = True
+#     print(para.text)
+#     print(para.style.name)
+# for table in file.tables:
+#     print('12121212121212')
+#     print(table.style.name)
+#     print( para.paragraph_format.space_before)
+#     print( para.paragraph_format.space_after)
 
-    para.paragraph_format.space_before = Pt(24)
-    para.paragraph_format.space_after = Pt(6)
-    print( para.paragraph_format.space_before)
-    print( para.paragraph_format.space_after)
+#     para.paragraph_format.space_before = Pt(24)
+#     para.paragraph_format.space_after = Pt(6)
+#     print( para.paragraph_format.space_before)
+#     print( para.paragraph_format.space_after)
 
-file.save("121909.docx")
+file.save("1220.docx")
